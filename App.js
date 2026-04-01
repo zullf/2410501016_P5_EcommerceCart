@@ -4,10 +4,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Provider, useSelector, useDispatch } from 'react-redux'; 
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { store } from './store';
-import { hydrateCart } from './store/cartSlice'; 
-import ProductList from './screens/ProductList';
-import CartScreen from './screens/CartScreen';
+import { store } from './src/store';
+import { hydrateCart } from './src/store/cartSlice'; 
+import ProductList from './src/screens/ProductList';
+import CartScreen from './src/screens/CartScreen';
 
 const Tab = createBottomTabNavigator();
 
