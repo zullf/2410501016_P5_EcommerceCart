@@ -33,3 +33,28 @@
 ### Bonus
 - **Badge jumlah item di tab Cart**
 - **Persist state ke AsyncStorage**
+- 
+---
+## Cara Menjalankan
+
+Aplikasi ini menggunakan **Expo**.
+
+### 1. Clone Repository
+```bash
+git clone <URL_REPOSITORY>
+```
+
+### 2. Install Dependencies
+```bash
+npm install @reduxjs/toolkit react-redux
+```
+
+### 3. Install Expo
+```bash
+npm install expo
+```
+
+### 4. Jalankan Aplikasi
+```bash
+npx expo start
+```
