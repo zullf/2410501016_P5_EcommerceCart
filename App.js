@@ -1,20 +1,67 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Provider, useSelector, useDispatch } from 'react-redux'; 
+import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { store } from './store';
+import { hydrateCart } from './store/cartSlice'; 
+import ProductList from './screens/ProductList';
+import CartScreen from './screens/CartScreen';
 
-export default function App() {
+const Tab = createBottomTabNavigator();
+
+function MainLayout() {
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
+  const badgeCount = cartItems.length;
+
+  useEffect(() => {
+    const loadSavedCart = async () => {
+      try {
+        const savedData = await AsyncStorage.getItem('cart_data');
+        if (savedData !== null) {
+          dispatch(hydrateCart(JSON.parse(savedData)));
+        }
+      } catch (e) {
+        console.log("Error loading data", e);
+      }
+    };
+    loadSavedCart();
+  }, [dispatch]);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ color, size }) => {
+            let iconName = route.name === 'Home' ? 'home' : 'cart';
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+        })}
+      >
+        <Tab.Screen 
+          name="Home" 
+          component={ProductList} 
+          options={{ title: 'Daftar Produk' }} 
+        />
+        <Tab.Screen 
+          name="Cart" 
+          component={CartScreen} 
+          options={{ 
+            title: 'Keranjang Saya',
+            tabBarBadge: badgeCount > 0 ? badgeCount : null 
+          }} 
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+  return (
+    <Provider store={store}>
+      <MainLayout />
+    </Provider>
+  );
+}
