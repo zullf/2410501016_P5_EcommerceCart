@@ -33,7 +33,7 @@
 ### Bonus
 - **Badge jumlah item di tab Cart**
 - **Persist state ke AsyncStorage**
-- 
+
 ---
 ## Cara Menjalankan
 
